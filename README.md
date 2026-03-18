@@ -4,7 +4,8 @@
 Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Evil Requiem (RE9). Also allows for configuring monitor distance horizontal (MDH) and custom sensitivity.
 
 ## Note
-- Due to how the scope works I would recommend installing one of these two mods or the scoped sensitivity will still be off (only one of them since both of them include the same fix and are therefore not compatible with eachother)
+- Due to how the scope works I would recommend installing one of these two mods or the scoped sensitivity will still be off
+  - Only one of them since both of them include the same fix and are therefore not compatible with eachother
   - Scope Resolution Fix
     - NexusMods: https://www.nexusmods.com/residentevilrequiem/mods/588
     - GitHub: https://github.com/TonWonton/RE9_ScopeResolutionFix
