@@ -4,14 +4,19 @@
 Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Evil Requiem (RE9). Also allows for configuring monitor distance horizontal (MDH) and custom sensitivity.
 
 ## Note
-- Due to how the scope works I would recommend installing Scope Resolution Fix, or the scope sensitivity will still be off
-  - NexusMods: https://www.nexusmods.com/residentevilrequiem/mods/588
-  - GitHub: https://github.com/TonWonton/RE9_ScopeResolutionFix
+- Due to how the scope works I would recommend installing one of these two mods or the scoped sensitivity will still be off
+  - Only one of them since both of them include the same fix and are therefore not compatible with eachother
+  - Scope Resolution Fix
+    - NexusMods: https://www.nexusmods.com/residentevilrequiem/mods/588
+    - GitHub: https://github.com/TonWonton/RE9_ScopeResolutionFix
+  - Custom Camera FOV
+    - NexusMods: https://www.nexusmods.com/residentevilrequiem/mods/57
+    - GitHub: https://github.com/TonWonton/RE9_CustomCameraFOV
 
-## My recommendation
+## Recommendation
 - Sensitivity
   - Set `When Aiming` sensitivity to the same as `Normal Gameplay` sensitivity
-  - If you have `Use custom sensitivity` enabled: There is no "1x" multiplier. It is probably best to set the sensitivity to 10/20 (default 2.025x multiplier) or 0/20 (0.1x multiplier).
+  - If you have `Use custom sensitivity` enabled: There is no "1x" multiplier. It is probably best to set the in-game sensitivity to 10/20 (default 2.025x multiplier) or 0/20 (0.1x multiplier).
 - MDH
   - MDH 1 = MDH 100% at all aspect ratios
   - MDH 100% is the same as Valorant 1x scope sensitivity
@@ -41,3 +46,6 @@ Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Ev
 ## Changelog
 ### v1.0.0
 - Initial release
+
+### v1.0.1
+- Fix MDH 0% scaling
