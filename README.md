@@ -69,3 +69,6 @@ Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Ev
 
 ### v1.0.1
 - Fix MDH 0% scaling
+
+### v1.0.1-1
+- Add lua version
