@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using Hexa.NET.ImGui;
 using REFrameworkNET.Callbacks;
 using REFrameworkNET.Attributes;
@@ -23,7 +22,7 @@ namespace RE9_SensitivityScalingFix
 		public const string COMPANY = "https://github.com/TonWonton/RE9_SensitivityScalingFix";
 
 		public const string GUID = "RE9_SensitivityScalingFix";
-		public const string VERSION = "1.0.0";
+		public const string VERSION = "1.0.1";
 
 		public const string GUID_AND_V_VERSION = GUID + " v" + VERSION;
 
@@ -33,11 +32,11 @@ namespace RE9_SensitivityScalingFix
 
 		/* VARIABLES */
 		//Const
-		public const float BASE_SENSITIVITY = 7f; //Internal sensitivity divisor
+		public const float BASE_SENSITIVITY = 7f; //Game's internal sensitivity divisor
 		public const float SCOPE_CAMERA_360_SPEED_RATE = 0.57f; //Estimated scope camera speed rate multiplier that matches 360 distance
 		public const float BASE_FOV = 40f; //Use 40 FOV as base since both characters use 40 FOV in 3rd person
 		public const float BASE_FOV_RAD = BASE_FOV * MathF.PI / 180f;
-		public static readonly float baseFOVRadDiv2Tan = MathF.Tan(BASE_FOV_RAD / 2f);
+		private static readonly float _baseFOVRadDiv2Tan = MathF.Tan(BASE_FOV_RAD / 2f);
 
 		//Config
 		private static Config _config = new Config(GUID);
@@ -49,7 +48,6 @@ namespace RE9_SensitivityScalingFix
 
 		//Variables
 		private static CameraOptionSubSystem? _cameraOptionSubSystem;
-		private static CameraInputUserData? _cameraInputUserData;
 		private static Camera? _mainCamera;
 		private static float _originalScopeCameraSpeedRate;
 		private static bool _initialized = false;
@@ -68,25 +66,22 @@ namespace RE9_SensitivityScalingFix
 					: BitConverter.Int32BitsToSingle((int)retVal)
 				;
 
-				//Get FOV
-				float cameraFOV = _mainCamera!.FOV;
+				//Get FOV and aspect ratio
+				Camera mainCamera = _mainCamera!;
+				float cameraFOV = mainCamera.FOV; //FOV is vertical
 				float currentFOVRad = cameraFOV * MathF.PI / 180f;
-
-				//Get screen size
-				Size screenSize = _cameraInputUserData!._MouseBaseScreenSize;
-				float x = screenSize.w;
-				float y = screenSize.h;
-				float aspectRatio = x / y;
+				float aspectRatio = mainCamera.AspectRatio;
 
 				//Calculate new sensitivity
-				float mdh = _monitorDistanceHorizontal.Value;
-				float coefficient = mdh * aspectRatio;
-				float scale = MathF.Atan(coefficient * MathF.Tan(currentFOVRad / 2f)) / MathF.Atan(coefficient * baseFOVRadDiv2Tan);
+				float coefficient = _monitorDistanceHorizontal.Value * aspectRatio;
+				float baseFOVRadDiv2Tan = _baseFOVRadDiv2Tan;
+				float scale = coefficient > 0f
+					? MathF.Atan(coefficient * MathF.Tan(currentFOVRad / 2f)) / MathF.Atan(coefficient * baseFOVRadDiv2Tan)
+					: MathF.Tan(currentFOVRad / 2f) / baseFOVRadDiv2Tan
+				;
+
+				//Set new sensitivity
 				float newSensitivity = desiredSensitivity / scale; //Divide since the sensitivity is a divisor
-
-				//Log.Info("Original sensitivity: " + desiredSensitivity);
-				//Log.Info("New sensitivity: " + newSensitivity);
-
 				retVal = (retVal & 0xFFFFFFFF00000000) | (uint)BitConverter.SingleToInt32Bits(newSensitivity);
 			}
 		}
@@ -105,16 +100,6 @@ namespace RE9_SensitivityScalingFix
 					_cameraOptionSubSystem = cameraSystem._OptionSubSystem;
 				}
 
-				//Get camera input user data if null
-				if (_cameraInputUserData == null)
-				{
-					CameraInputSubSystem? cameraInputSubSystem = cameraSystem._InputSubSystem;
-					if (cameraInputSubSystem != null)
-					{
-						_cameraInputUserData = cameraInputSubSystem._Data;
-					}
-				}
-
 				//Get main camera if null
 				if (_mainCamera == null)
 				{
@@ -125,7 +110,7 @@ namespace RE9_SensitivityScalingFix
 					}
 				}
 
-				if (_cameraOptionSubSystem != null && _cameraInputUserData != null && _mainCamera != null)
+				if (_cameraOptionSubSystem != null && _mainCamera != null)
 				{
 					_originalScopeCameraSpeedRate = _cameraOptionSubSystem._ScopeCameraSpeedRate;
 
@@ -225,7 +210,7 @@ namespace RE9_SensitivityScalingFix
 
 				ImGuiF.Category("General");
 				_enabled.Checkbox().ResetButton(ref labelNr);
-				_monitorDistanceHorizontal.DragFloat(SLIDER_STEP_0p001, 0.001f, 10f).ResetButton(ref labelNr);
+				_monitorDistanceHorizontal.DragFloat(SLIDER_STEP_0p001, 0f, 10f).ResetButton(ref labelNr);
 
 				ImGuiF.Category("Custom sensitivity");
 				_useCustomSensitivity.Checkbox().ResetButton(ref labelNr).GetValue(out bool useCustomSensitivity);
