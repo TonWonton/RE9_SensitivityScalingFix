@@ -7,10 +7,22 @@ Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Ev
 - REFrameworkNETPluginConfig https://github.com/TonWonton/REFrameworkNETPluginConfig
 
 ## Prerequisites
+### Lua
+- REFramework
+  - NexusMods: https://www.nexusmods.com/residentevilrequiem/mods/13
+  - GitHub: https://github.com/praydog/REFramework-nightly/releases
+
+### C#
 - REFramework and the REFramework C# API (both `RE9.zip` AND `csharp-api.zip`) https://github.com/praydog/REFramework-nightly/releases
 - .NET 10.0 Desktop Runtime x64 (if you don't already have it installed) https://dotnet.microsoft.com/en-us/download/dotnet/10.0
 
 ## Installation
+### Lua
+1. Install REFramework
+2. Download the lua script and extract to game folder
+  - `RE9_SensitivityScalingFix.lua` should be in `\GAME_FOLDER\reframework\autorun\RE9_SensitivityScalingFix.lua`
+
+### C#
 1. Install prerequisites
 2. Download the plugin and extract to game folder
   - `RE9_SensitivityScalingFix.dll` should be in `\GAME_FOLDER\reframework\plugins\managed\RE9_SensitivityScalingFix.dll`
@@ -30,6 +42,7 @@ Fixes the sensitivity scaling for all FOVs, ADS, and scopes, etc. in Resident Ev
 ## Recommendation
 - Sensitivity
   - Set `When Aiming` sensitivity to the same as `Normal Gameplay` sensitivity
+    - Actually the ADS sensitivity still feels slightly higher even though it should scale (maybe the game has different multiplier values for normal and ADS). Maybe set `When Aiming` to one or two lower than `Normal Gameplay` sensitivity
   - If you have `Use custom sensitivity` enabled: There is no "1x" multiplier. It is probably best to set the in-game sensitivity to 10/20 (default 2.025x multiplier) or 0/20 (0.1x multiplier).
 - MDH
   - MDH 1 = MDH 100% on all aspect ratios

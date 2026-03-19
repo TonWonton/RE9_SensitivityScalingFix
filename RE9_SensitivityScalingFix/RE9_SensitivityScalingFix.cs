@@ -69,15 +69,15 @@ namespace RE9_SensitivityScalingFix
 				//Get FOV and aspect ratio
 				Camera mainCamera = _mainCamera!;
 				float cameraFOV = mainCamera.FOV; //FOV is vertical
-				float currentFOVRad = cameraFOV * MathF.PI / 180f;
+				float cameraFOVRad = cameraFOV * MathF.PI / 180f;
 				float aspectRatio = mainCamera.AspectRatio;
 
 				//Calculate new sensitivity
 				float coefficient = _monitorDistanceHorizontal.Value * aspectRatio;
 				float baseFOVRadDiv2Tan = _baseFOVRadDiv2Tan;
 				float scale = coefficient > 0f
-					? MathF.Atan(coefficient * MathF.Tan(currentFOVRad / 2f)) / MathF.Atan(coefficient * baseFOVRadDiv2Tan)
-					: MathF.Tan(currentFOVRad / 2f) / baseFOVRadDiv2Tan
+					? MathF.Atan(coefficient * MathF.Tan(cameraFOVRad / 2f)) / MathF.Atan(coefficient * baseFOVRadDiv2Tan)
+					: MathF.Tan(cameraFOVRad / 2f) / baseFOVRadDiv2Tan
 				;
 
 				//Set new sensitivity
